@@ -1,0 +1,45 @@
+@import '@/style/template.scss';
+.swiper{
+    .swiper-button-next{
+        background: no-repeat url("@/assets/arrow_slider.png");
+        background-position: center;
+        background-size: 100%;
+        transform: scale(2) translateX(-10px) rotate(180deg);
+        opacity: 0.6;
+        transition: 0.2s;
+        &:hover{
+            opacity: 0.85;
+            filter: brightness(120%);
+        }
+        &::after{
+            content: '';
+        }
+    }
+    .swiper-button-prev{
+        background: no-repeat url("@/assets/arrow_slider.png");
+        background-position: center;
+        background-size: 100%;
+        transform: scale(2) translateX(10px) ;
+        opacity: 0.6;
+        transition: 0.2s;
+        &:hover{
+            opacity: 0.85;
+            filter: brightness(120%);
+        }
+        &::after{
+            content: '';
+        }
+    }
+    .swiper-button-disabled{
+        opacity: 0 !important;
+    }
+}
+
+ @media screen and (max-width: $mediaQuery2) {
+    .swiper-button-prev{
+        transform: scale(1) translateX(10px) ;
+    }
+    .swiper-button-next{
+        transform: scale(1) translateX(-10px) rotate(180deg);
+    }
+ }
