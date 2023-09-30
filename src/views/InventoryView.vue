@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import ItemApp from "@/components/inventory/ItemApp.vue";
+import { ref } from 'vue'
+
+
+</script>
 <template>
     <div class="inventory">
         <div class="inventory__wrap">
@@ -8,7 +14,7 @@
 
             <div class="inventory__grid">
                 <li v-for="cell in 25" class="inventory__grid_cell">
-                    <cell-app/>
+                    <item-app/>
                 </li>
             </div>
 
@@ -18,9 +24,7 @@
         </div>
     </div>
 </template>
-<script setup>
 
-</script>
 <style lang="scss">
     .inventory{
         background: var(--darkGray);
@@ -73,6 +77,3 @@
         
     }
 </style>
-<script setup>
-import CellApp from "@/components/inventory/CellApp.vue";
-</script>
