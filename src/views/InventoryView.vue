@@ -1,11 +1,73 @@
 <script setup lang="ts">
-import ItemApp from "@/components/inventory/ItemApp.vue";
-import { ref } from 'vue'
+    import ItemApp from "@/components/inventory/ItemApp.vue";
+    import { useItemsStore } from '@/stores/itemsStore.ts'
+    import { type Item} from '@/types/item'
 
+    import { ref } from 'vue'
+
+    const itemsStore = useItemsStore()
+
+    const cells = ref<Array<Item|null>>([])
+    const cellsElements = ref<Array<any>>([])
+
+    function renderCells(){
+        for(let i = 0; i < 25; i++){
+            cells.value[i] = null
+        }
+        itemsStore.items.forEach((item:Item) => {
+            
+            cells.value[item.position] = item
+        });
+    }
+    renderCells()
+
+
+    function changePositionById(id:number|null, position:number) {
+        if(id !== null){
+            itemsStore.changePosition(id, position)
+            renderCells()
+        }
+    }
+
+    const idCapturedItem = ref<number | null>(null)
+
+    function grabItem(id:number, position:number){
+        idCapturedItem.value = id
+        const startPosition = position
+        const elementToMove = cellsElements.value[startPosition].children[0]
+        function moveItem(e:any){
+            elementToMove.style.position = 'fixed'
+            elementToMove.style.pointerEvents = 'none'
+            elementToMove.style.transform = 'scale(1.3)'
+            elementToMove.style.left = (e.clientX - 30)+'px'
+            elementToMove.style.top = (e.clientY- 30)+'px'
+            elementToMove.style.zIndex = '10'
+        }
+
+        window.addEventListener('mousemove', moveItem)
+        window.addEventListener('mouseup', () => {
+            idCapturedItem.value = null
+            window.removeEventListener('mousemove', moveItem)
+            elementToMove.style.position = 'static'
+            elementToMove.style.left = 'auto'
+            elementToMove.style.top = 'auto'
+            elementToMove.style.pointerEvents = 'all'
+            elementToMove.style.zIndex = '1'
+            elementToMove.style.transform = 'none'
+        }, {once: true})
+    }
+
+    function dropItem(position:number){
+        if(itemsStore.items.find(el => el.position == position)){
+            return
+        }
+        changePositionById(idCapturedItem.value, position)
+    }
 
 </script>
 <template>
-    <div class="inventory">
+    
+    <div class="inventory" :class="{'inventory--grabbing':idCapturedItem !== null} ">
         <div class="inventory__wrap">
             <div class="inventory__left-card">
                 <img src="@/assets/mockup/img_blur.png" alt="">
@@ -13,8 +75,10 @@ import { ref } from 'vue'
             </div>
 
             <div class="inventory__grid">
-                <li v-for="cell in 25" class="inventory__grid_cell">
-                    <item-app/>
+                <li v-for="(cell, idx) in cells" ref="cellsElements" @mouseup="dropItem(idx)" :key="idx" class="inventory__grid_cell">
+                    <span v-if="cell" >
+                        <item-app @mousedown.prevent="grabItem(cell.id, idx)" :capture="cell.id == idCapturedItem" :cell="cell"/>
+                    </span>
                 </li>
             </div>
 
@@ -33,6 +97,12 @@ import { ref } from 'vue'
         justify-content: center;
         width: 100%;
         height: 100%;
+        &--grabbing{
+            cursor: grabbing;
+            .cell{
+                cursor: grabbing;
+            }
+        }
         &__wrap{
             width: 785px;
             height: 600px;
@@ -63,6 +133,13 @@ import { ref } from 'vue'
             overflow: hidden;
             &_cell{
                 background: var(--darkGray);
+                
+                &:hover{
+                    background: var(--darkGrayHover);
+                }
+                & > span{
+                    transition: transform .1s;
+                }
             }
         }
         &__bottom-panel{

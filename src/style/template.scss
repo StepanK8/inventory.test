@@ -5,33 +5,16 @@ $mediaQuery2: 800px;
 
 :root{
     --darkGray: #1E1E1E;
+    --darkGrayHover: #282828;
     --Primary-Border: #4D4D4D;
     --Seondary-BG: #262626;
     --Skeleton: linear-gradient(90deg, #3C3C3C 0%, #444 51.04%, #333 100%);
-    --mainColor: #5EBE12;
-    --background: #ECF1F7;
 
-    --mainColorHover: #66d30c;
-    --lightBlue: #F2F5F7;
-    --accentBlue: #DBDDFF;
-    --lightGray: #F2F5F7;
-    --deepGray: #8A8B8E;
-    --gold: #FFD86E;
-    --warning: #EE1B1B;
-    --goldGradient: linear-gradient(93.19deg, #FFD86E 10.84%, #F0B357 27.5%, #F2CB6C 51.07%, #E6A94D 71.4%, #FFD86E 88.87%);
 
     --mainFont: 'ArialNova';
     --mediaQuery1: 1351px;
     --heightImageWrap: 440px;
     
-    --heightBetweenWraps: 30px;
-    --marginBottomTitle: 15px;
-    
-    --width: 1464px;
-
-    --maxW: 95vw;
-    --heightImageWrap: 45vw;
-    --middle: 4vw;
 }
 
 @media screen and (max-width: $mediaQuery1) {
@@ -60,37 +43,4 @@ $mediaQuery2: 800px;
 }
 
 
-@mixin baseText($size: var(--middle)){
-    font-family: "Montserrat";
-    font-size: $size;
-    color: #191D1F;
-}
-
-@mixin blueButton{
-    width: 100%;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 52px;
-    background: var(--mainColor);
-    @include baseText(var(--little));
-    color: white;
-    transition: .2s;
-    cursor: pointer;
-    &:hover{
-        background-color: var(--hoverBlue);
-    }
-}
-@mixin whiteButton{
-    @include blueButton;
-    color: var(--mainColor);
-    background: white;
-    border: 2px solid var(--mainColor);
-    &:hover{
-        color: white;
-        background: var(--mainColor);
-        border: 2px solid var(--mainColor);
-    }
-}
 

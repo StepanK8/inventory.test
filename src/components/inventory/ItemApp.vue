@@ -1,14 +1,20 @@
+<script setup lang="ts">
+import {ref} from 'vue'
+const props = defineProps(['cell', 'capture'])
+const imagePath = ref(('@/assets/mockup/item_blue.png'))
+</script>
+
 <template lang="">
-    <div class="cell">
-        <img class="cell__image" src="@/assets/mockup/item_green.png" alt="">
+    <div class="cell" :class="{'cell--hideCorner':props.capture}">
+        <img class="cell__image" :src="`/images/items/item_${props.cell.color}.png`" alt="">
         <div class="cell__corner-block">
-            <p class="cell__corner-block_number">4</p>
+            <!-- {{props}} -->
+            <p class="cell__corner-block_number">{{props.cell.amount}}</p>
         </div>
     </div>
 </template>
-<script>
-</script>
-<style lang="scss">
+
+<style lang="scss" >
     .cell{
         display: flex;
         justify-content: center;
@@ -16,6 +22,13 @@
         width: 100%;
         height: 100%;
         position: relative;
+        cursor: grab;
+        user-select: contain;
+        &--hideCorner{
+            .cell__corner-block{
+                display: none;
+            }
+        }
         &__image{
             width: 54px;
         }
@@ -36,6 +49,7 @@
                 color: white;
                 opacity: 0.4;
                 font-size: 10px;
+                
             }
 
         }
