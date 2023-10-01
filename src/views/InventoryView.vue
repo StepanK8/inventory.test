@@ -84,6 +84,7 @@
 
             <div class="inventory__bottom-panel">
                 <img src="@/assets/skeleton/2.png" alt="">
+                <img class="inventory__bottom-panel_cross" src="@/assets/icons/cross.svg" alt="">
             </div>
         </div>
     </div>
@@ -150,6 +151,13 @@
             padding: 18px;
             align-items: center;
             justify-content: flex-start;
+            position: relative;
+            &_cross{
+                position: absolute;
+                top: 10px;
+                right: 10px;
+
+            }
         }
         
     }
