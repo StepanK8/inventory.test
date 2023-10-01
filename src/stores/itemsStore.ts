@@ -43,6 +43,17 @@ export const useItemsStore = defineStore('main', {
     },
     clearItems(){
       this.items = []
+    },
+    deleteItemById(id:number){
+      console.log(id);
+      this.items.forEach((el, idx) => {
+        if(el.id == id){
+          
+          this.items.splice(idx, 1)
+          return
+        }
+        
+      })
     }
   },
   persist: true,

@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import ItemApp from "@/components/inventory/ItemApp.vue";
+    import InnerModal from '@/components/inventory/InnerModal.vue'
     import { useItemsStore } from '@/stores/itemsStore.ts'
     import { type Item} from '@/types/item'
 
@@ -9,7 +10,7 @@
 
     const cells = ref<Array<Item|null>>([])
     const cellsElements = ref<Array<any>>([])
-
+    const selectedItem = ref<Item|null>(null)
     function renderCells(){
         for(let i = 0; i < 25; i++){
             cells.value[i] = null
@@ -29,6 +30,25 @@
         }
     }
 
+    function selectItem(item:Item){
+        selectedItem.value = item    
+        console.log(selectedItem.value);
+        
+    }
+
+    function closeModal(){
+        console.log('closeModal');
+        
+        selectedItem.value = null
+    }
+
+    function deleteItem(){
+        itemsStore.deleteItemById(selectedItem.value.id)
+        closeModal()
+        renderCells()
+    }
+
+    
     const idCapturedItem = ref<number | null>(null)
 
     function grabItem(id:number, position:number){
@@ -77,9 +97,10 @@
             <div class="inventory__grid">
                 <li v-for="(cell, idx) in cells" ref="cellsElements" @mouseup="dropItem(idx)" :key="idx" class="inventory__grid_cell">
                     <span v-if="cell" >
-                        <item-app @mousedown.prevent="grabItem(cell.id, idx)" :capture="cell.id == idCapturedItem" :cell="cell"/>
+                        <item-app @click="selectItem(cell)" @mousedown.prevent="grabItem(cell.id, idx)" :capture="cell.id == idCapturedItem" :cell="cell"/>
                     </span>
                 </li>
+                <InnerModal :item="selectedItem" @deleteItem="deleteItem" @close="closeModal"/>
             </div>
 
             <div class="inventory__bottom-panel">
@@ -132,6 +153,8 @@
             gap: 1px;
             border: 1px solid var(--Primary-Border);
             overflow: hidden;
+            height: 100%;
+            position: relative;
             &_cell{
                 background: var(--darkGray);
                 

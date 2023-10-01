@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-const props = defineProps(['cell', 'capture'])
-const imagePath = ref(('@/assets/mockup/item_blue.png'))
+    import {ref, watch} from 'vue'
+    const props = defineProps(['cell', 'capture'])
+    const imagePath = ref(('@/assets/mockup/item_blue.png'))
 </script>
 
 <template lang="">
-    <div class="cell" :class="{'cell--hideCorner':props.capture}">
+    <div class="cell"  v-if="props.cell" :class="{'cell--hideCorner':props.capture}">
         <img class="cell__image" :src="`/images/items/item_${props.cell.color}.png`" alt="">
         <div class="cell__corner-block">
             <!-- {{props}} -->
